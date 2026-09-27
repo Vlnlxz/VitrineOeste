@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Oeste | Marketplace de anúncios</title>
+    <style>
+        /* --- VARIÁVEIS E CONFIGURAÇÕES GERAIS --- */
+        :root {
+            --ink: #14213d;
+            --muted: #5b6478;
+            --bg: #f2f5fa;
+            --card: #fff;
+            --line: #e3e8f1;
+            --primary: #2b59ff;
+            --accent: #ffb703;
+            --radius: 16px;
+            --shadow: 0 2px 8px rgba(20, 33, 61, .07);
+            --shadow-hover: 0 14px 28px rgba(20, 33, 61, .16);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 150px;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .wrap {
+            width: min(1200px, 92%);
+            margin-inline: auto;
+        }
+
+        /* --- TOPO / HEADER --- */
+        header {
+            background: var(--ink);
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 14px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo b {
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--ink);
+            font-size: 1.2rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .search {
+            flex: 1;
+            min-width: 240px;
+            display: flex;
+            background: #fff;
+            border-radius: 999px;
+            overflow: hidden;
+            padding: 4px;
+        }
+
+        .search input {
+            flex: 1;
+            border: 0;
+            outline: 0;
+            padding: 10px 18px;
+            font-size: 1rem;
+            color: var(--ink);
+            background: transparent;
+            min-width: 0;
+        }
+
+        .search button {
+            border: 0;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            padding: 0 24px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: .95rem;
+            transition: background .2s;
+        }
+
+        .search button:hover {
+            background: #1c44d6;
+        }
+
+        /* --- NAVEGAÇÃO --- */
+        nav {
+            border-top: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scrollbar-width: none;
+        }
+
+        nav ul::-webkit-scrollbar {
+            display: none;
+        }
+
+        nav a {
+            display: block;
+            white-space: nowrap;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: .92rem;
+            color: #d7deee;
+            transition: background .2s, color .2s;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            background: rgba(255, 255, 255, .14);
+            color: #fff;
+            outline: 0;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            padding: 36px 0 8px;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            letter-spacing: -.8px;
+            line-height: 1.15;
+        }
+
+        .hero p {
+            color: var(--muted);
+            margin-top: 8px;
+            max-width: 60ch;
+        }
+
+        /* --- CATEGORIAS --- */
+        .cat {
+            margin: 36px 0;
+            padding: 22px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            border-top: 6px solid var(--a);
+        }
+
+        .cat-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .cat-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            font-size: 1.7rem;
+            background: linear-gradient(135deg, var(--a), var(--b));
+        }
+
+        .cat-head h2 {
+            font-size: 1.4rem;
+            letter-spacing: -.3px;
+        }
+
+        .cat-head p {
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        /* Temas das Categorias */
+        .c1 { --a: #5b8cff; --b: #a5c0ff; }
+        .c2 { --a: #ff7a59; --b: #ffb59f; }
+        .c3 { --a: #2fbf9b; --b: #8fe3cc; }
+        .c4 { --a: #c86bff; --b: #e3b4ff; }
+        .c5 { --a: #ffb703; --b: #ffdd85; }
+        .c6 { --a: #36b5e8; --b: #9adcf5; }
+        .c7 { --a: #ff6f91; --b: #ffb3c6; }
+        .c8 { --a: #4cd07d; --b: #a3ecbd; }
+        .c9 { --a: #ffa64c; --b: #ffd1a3; }
+        .c10 { --a: #7c9c4a; --b: #c3dd9c; }
+
+        /* --- GRID E CARDS --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--a);
+        }
+
+        .img {
+            height: 130px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--a), var(--b));
+        }
+
+        .img img {
+            display: block;
+            color: transparent;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .3s;
+        }
+
+        .card:hover .img img {
+            transform: scale(1.06);
+        }
+
+        .body {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 14px;
+            flex: 1;
+        }
+
+        .body h3 {
+            font-size: 1.02rem;
+            line-height: 1.25;
+        }
+
+        .body p {
+            color: var(--muted);
+            font-size: .86rem;
+            flex: 1;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--ink);
+            margin-top: 6px;
+        }
+
+        .loc {
+            font-size: .8rem;
+            color: var(--muted);
+        }
+
+        .btn {
+            margin-top: 10px;
+            text-align: center;
+            padding: 9px 12px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: .9rem;
+            border: 0;
+            display: block;
+            transition: background .2s;
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            background: #1c44d6;
+            outline: 0;
+        }
+
+        .btn:focus-visible {
+            box-shadow: 0 0 0 3px rgba(43, 89, 255, .35);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--ink);
+            color: #aab4cc;
+            text-align: center;
+            padding: 28px 0;
+            margin-top: 48px;
+            font-size: .9rem;
+        }
+
+        footer strong {
+            color: #fff;
+        }
+
+        /* --- PÁGINA DE DETALHE DO ANÚNCIO --- */
+        .breadcrumb {
+            padding: 18px 0 0;
+            font-size: .88rem;
+            color: var(--muted);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .detail {
+            margin: 20px 0 48px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-top: 6px solid var(--a);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+        }
+
+        .detail-img {
+            background: linear-gradient(135deg, var(--a), var(--b));
+            min-height: 340px;
+        }
+
+        .detail-img img {
+            width: 100%;
+            height: 100%;
+            min-height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .detail-info {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .detail-cat-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            align-self: flex-start;
+            background: var(--bg);
+            color: var(--muted);
+            font-size: .82rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .detail-info h1 {
+            font-size: 1.7rem;
+            letter-spacing: -.4px;
+            line-height: 1.2;
+        }
+
+        .detail-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--ink);
+        }
+
+        .detail-loc {
+            color: var(--muted);
+            font-size: .95rem;
+        }
+
+        .detail-desc {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: .94rem;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--a);
+            font-weight: 800;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn-whats {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 13px 18px;
+            border-radius: 10px;
+            background: #25d366;
+            color: #fff;
+            font-weight: 700;
+            font-size: .96rem;
+            display: block;
+        }
+
+        .btn-whats:hover {
+            background: #1eb958;
+        }
+
+        .btn-voltar {
+            min-width: 160px;
+            text-align: center;
+            padding: 13px 18px;
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--ink);
+            font-weight: 700;
+            font-size: .96rem;
+            border: 1px solid var(--line);
+            display: block;
+        }
+
+        .btn-voltar:hover {
+            background: #e3e8f1;
+        }
+
+        /* --- RESPONSIVIDADE & ACESSIBILIDADE --- */
+        @media (max-width: 1050px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .detail-img, .detail-img img {
+                min-height: 260px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .cat {
+                padding: 16px;
+            }
+            .detail-info {
+                padding: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .img {
+                height: 150px;
+            }
+            .search button {
+                padding: 0 16px;
+            }
+            .detail-price {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+            .card:hover {
+                transform: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="logo" href="#topo"><b>V</b>Vitrine<span>Oeste</span></a>
+      <form class="search" role="search" action="#" method="get">
+        <input type="search" name="q" placeholder="Busque por produtos, veículos, serviços..." aria-label="Pesquisar anúncios">
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+    <nav aria-label="Categorias">
+      <ul>
+        <li><a href="#eletronicos">Eletrônicos</a></li>
+        <li><a href="#veiculos">Veículos</a></li>
+        <li><a href="#imoveis">Imóveis</a></li>
+        <li><a href="#roupas">Roupas e Calçados</a></li>
+        <li><a href="#casa">Casa e Móveis</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#pets">Animais de Estimação</a></li>
+        <li><a href="#esportes">Esportes e Lazer</a></li>
+        <li><a href="#bebes">Bebês e Crianças</a></li>
+        <li><a href="#agro">Agro e Máquinas</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="topo">
+  <section class="hero">
+    <h1>Compre, venda e contrate perto de você</h1>
+    <p>Explore anúncios de produtos e serviços da região, organizados por categoria.</p>
+  </section>
+
+  <section class="cat c1" id="eletronicos">
+    <div class="cat-head"><div class="cat-icon">📱</div><div><h2>Eletrônicos</h2><p>Celulares, notebooks, TVs e mais</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/iphone-13.jpg" alt="" loading="lazy"></div><div class="body"><h3>iPhone 13</h3><p>Celular usado em ótimo estado, com carregador.</p><span class="price">R$ 2.500</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/eletronicos-iphone-13.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/notebook-dell-inspiron.jpg" alt="" loading="lazy"></div><div class="body"><h3>Notebook Dell Inspiron</h3><p>i5, 8 GB de RAM e SSD de 256 GB.</p><span class="price">R$ 2.200</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/smart-tv-50-4k.jpg" alt="" loading="lazy"></div><div class="body"><h3>Smart TV 50" 4K</h3><p>Com controle e suporte de parede, sem defeitos.</p><span class="price">R$ 1.850</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/fone-bluetooth-jbl.jpg" alt="" loading="lazy"></div><div class="body"><h3>Fone Bluetooth JBL</h3><p>Sem fio, bateria de 20 horas, na caixa.</p><span class="price">R$ 220</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/playstation-4-slim.jpg" alt="" loading="lazy"></div><div class="body"><h3>PlayStation 4 Slim</h3><p>500 GB, 2 controles e 3 jogos inclusos.</p><span class="price">R$ 1.400</span><span class="loc">📍 Curitiba - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c2" id="veiculos">
+    <div class="cat-head"><div class="cat-icon">🚗</div><div><h2>Veículos</h2><p>Carros, motos, bikes e utilitários</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/fiat-argo-1-0-2020.jpg" alt="" loading="lazy"></div><div class="body"><h3>Fiat Argo 1.0 2020</h3><p>Único dono, revisões em dia, 45 mil km.</p><span class="price">R$ 58.900</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/veiculos-fiat-argo.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/honda-cg-160-fan.jpg" alt="" loading="lazy"></div><div class="body"><h3>Honda CG 160 Fan</h3><p>Ano 2021, partida elétrica, documentação ok.</p><span class="price">R$ 12.500</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/fiat-strada-endurance.jpg" alt="" loading="lazy"></div><div class="body"><h3>Fiat Strada Endurance</h3><p>Cabine simples, 2019, ar-condicionado.</p><span class="price">R$ 64.000</span><span class="loc">📍 Marechal C. Rondon - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/bicicleta-aro-29.jpg" alt="" loading="lazy"></div><div class="body"><h3>Bicicleta Aro 29</h3><p>Quadro de alumínio, 21 marchas, freio a disco.</p><span class="price">R$ 1.300</span><span class="loc">📍 Maringá - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/renault-master-furgao.jpg" alt="" loading="lazy"></div><div class="body"><h3>Renault Master Furgão</h3><p>Ideal para entregas, bem conservada.</p><span class="price">R$ 92.000</span><span class="loc">📍 Ponta Grossa - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c3" id="imoveis">
+    <div class="cat-head"><div class="cat-icon">🏠</div><div><h2>Imóveis</h2><p>Casas, apartamentos, terrenos e aluguel</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/casa-3-quartos.jpg" alt="" loading="lazy"></div><div class="body"><h3>Casa 3 quartos</h3><p>Suíte, garagem para 2 carros e quintal amplo.</p><span class="price">R$ 420.000</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/imoveis-casa-3-quartos.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/apartamento-2-quartos.jpg" alt="" loading="lazy"></div><div class="body"><h3>Apartamento 2 quartos</h3><p>Sacada com churrasqueira e 1 vaga.</p><span class="price">R$ 1.600/mês</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/terreno-360-m2.jpg" alt="" loading="lazy"></div><div class="body"><h3>Terreno 360 m²</h3><p>Plano, murado, em loteamento com asfalto.</p><span class="price">R$ 135.000</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/chacara-2-hectares.jpg" alt="" loading="lazy"></div><div class="body"><h3>Chácara 2 hectares</h3><p>Casa simples, poço artesiano e pomar.</p><span class="price">R$ 580.000</span><span class="loc">📍 Céu Azul - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/sala-comercial-40-m2.jpg" alt="" loading="lazy"></div><div class="body"><h3>Sala comercial 40 m²</h3><p>Térrea, no centro, com banheiro.</p><span class="price">R$ 2.200/mês</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c4" id="roupas">
+    <div class="cat-head"><div class="cat-icon">👟</div><div><h2>Roupas e Calçados</h2><p>Moda feminina, masculina e infantil</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/tenis-nike-air-max.jpg" alt="" loading="lazy"></div><div class="body"><h3>Tênis Nike Air Max</h3><p>Tamanho 42, usado poucas vezes.</p><span class="price">R$ 380</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/roupas-tenis-nike.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/jaqueta-jeans.jpg" alt="" loading="lazy"></div><div class="body"><h3>Jaqueta jeans</h3><p>Unissex, tamanho M, lavagem escura.</p><span class="price">R$ 120</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/vestido-de-festa.jpg" alt="" loading="lazy"></div><div class="body"><h3>Vestido de festa</h3><p>Longo, azul royal, tamanho 38, usado uma vez.</p><span class="price">R$ 250</span><span class="loc">📍 Curitiba - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/bolsa-de-couro.jpg" alt="" loading="lazy"></div><div class="body"><h3>Bolsa de couro</h3><p>Grande, com zíper e alça removível.</p><span class="price">R$ 180</span><span class="loc">📍 Londrina - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/bota-de-trabalho.jpg" alt="" loading="lazy"></div><div class="body"><h3>Bota de trabalho</h3><p>Com bico de aço, tamanho 40, nova.</p><span class="price">R$ 150</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c5" id="casa">
+    <div class="cat-head"><div class="cat-icon">🛋️</div><div><h2>Casa e Móveis</h2><p>Móveis, eletrodomésticos e decoração</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/sofa-3-lugares.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Sofá 3 lugares</h3><p>Retrátil e reclinável, tecido suede cinza.</p><span class="price">R$ 950</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/casa-sofa-3-lugares.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/cama-box-casal.jpg" alt="" loading="lazy"></div><div class="body"><h3>Cama box casal</h3><p>Com colchão de molas, ótimo estado.</p><span class="price">R$ 700</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/geladeira-frost-free.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Geladeira Frost Free</h3><p>Duplex, 375 litros, funcionando perfeitamente.</p><span class="price">R$ 1.500</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/mesa-com-6-cadeiras.jpg" alt="" loading="lazy"></div><div class="body"><h3>Mesa com 6 cadeiras</h3><p>Madeira maciça, tampo com vidro.</p><span class="price">R$ 1.100</span><span class="loc">📍 Maringá - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/fogao-5-bocas.jpg" alt="" loading="lazy"></div><div class="body"><h3>Fogão 5 bocas</h3><p>Inox, com acendimento automático.</p><span class="price">R$ 480</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c6" id="servicos">
+    <div class="cat-head"><div class="cat-icon">🛠️</div><div><h2>Serviços</h2><p>Profissionais para reparos, aulas e eventos</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/eletricista-residencial.jpg" alt="" loading="lazy"></div><div class="body"><h3>Eletricista residencial</h3><p>Instalações, reparos e quadros de luz.</p><span class="price">A partir de R$ 80</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/servicos-eletricista.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/diarista.jpg" alt="" loading="lazy"></div><div class="body"><h3>Diarista</h3><p>Limpeza completa, com experiência e referências.</p><span class="price">R$ 150/dia</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/frete-e-mudancas.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Frete e mudanças</h3><p>Caminhão baú com ajudantes, orçamento grátis.</p><span class="price">A partir de R$ 200</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/aulas-de-reforco.jpg" alt="" loading="lazy"></div><div class="body"><h3>Aulas de reforço</h3><p>Matemática e português, ensinos fundamental e médio.</p><span class="price">R$ 60/hora</span><span class="loc">📍 Curitiba - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/fotografo-de-eventos.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Fotógrafo de eventos</h3><p>Aniversários, casamentos e ensaios.</p><span class="price">A partir de R$ 500</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c7" id="pets">
+    <div class="cat-head"><div class="cat-icon">🐾</div><div><h2>Animais de Estimação</h2><p>Cães, gatos, acessórios e produtos para pets</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/filhote-poodle.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Filhote de Poodle</h3><p>Vacinado e vermifugado, pronto para novo lar.</p><span class="price">R$ 900</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/pets-filhote-poodle.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/gaiola-passaros.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Gaiola para pássaros grande</h3><p>Estrutura em metal, com bebedouro e poleiros.</p><span class="price">R$ 150</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/aquario-60-litros.webp" alt="" loading="lazy"></div><div class="body"><h3>Aquário 60 litros completo</h3><p>Com filtro, aquecedor e iluminação de LED.</p><span class="price">R$ 320</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/racao-premium-15kg.jpg" alt="" loading="lazy"></div><div class="body"><h3>Ração premium 15 kg</h3><p>Para cães adultos, pacote lacrado.</p><span class="price">R$ 180</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/casinha-cachorro-madeira.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Casinha de cachorro de madeira</h3><p>Porte médio, tratada e impermeabilizada.</p><span class="price">R$ 220</span><span class="loc">📍 Medianeira - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c8" id="esportes">
+    <div class="cat-head"><div class="cat-icon">⚽</div><div><h2>Esportes e Lazer</h2><p>Equipamentos esportivos, camping e lazer</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/bicicleta-ergometrica.webp" alt="" loading="lazy"></div><div class="body"><h3>Bicicleta ergométrica</h3><p>Com monitor de treino, pouco uso.</p><span class="price">R$ 650</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/esportes-bicicleta-ergometrica.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/barraca-camping-4p.webp" alt="" loading="lazy"></div><div class="body"><h3>Kit barraca de camping 4 pessoas</h3><p>Impermeável, fácil montagem, com case.</p><span class="price">R$ 380</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/halteres-10kg.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Halteres emborrachados (par 10 kg)</h3><p>Antiderrapante, sem marcas de uso.</p><span class="price">R$ 240</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/skate-profissional.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Skate profissional</h3><p>Shape importado, rolamentos novos.</p><span class="price">R$ 320</span><span class="loc">📍 Curitiba - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/bola-futebol-oficial.webp" alt="" loading="lazy"></div><div class="body"><h3>Bola de futebol oficial</h3><p>Tamanho 5, costurada à mão.</p><span class="price">R$ 120</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c9" id="bebes">
+    <div class="cat-head"><div class="cat-icon">🍼</div><div><h2>Bebês e Crianças</h2><p>Enxoval, brinquedos e móveis infantis</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/carrinho-bebe-3-rodas.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Carrinho de bebê 3 rodas</h3><p>Capota removível, freio de estacionamento.</p><span class="price">R$ 480</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="anuncios/bebes-carrinho-bebe.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/berco-multifuncional.webp" alt="" loading="lazy"></div><div class="body"><h3>Berço multifuncional</h3><p>Vira mini-cama, com colchão incluso.</p><span class="price">R$ 550</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/bebe-conforto-carro.jpg" alt="" loading="lazy"></div><div class="body"><h3>Cadeirinha para carro (bebê conforto)</h3><p>Até 13 kg, cintos em ótimo estado.</p><span class="price">R$ 300</span><span class="loc">📍 Foz do Iguaçu - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/kit-roupinhas-bebe.webp" alt="" loading="lazy"></div><div class="body"><h3>Kit de roupinhas 0-3 meses</h3><p>20 peças, unissex, lavadas e passadas.</p><span class="price">R$ 150</span><span class="loc">📍 Marechal C. Rondon - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/bicicleta-infantil-aro16.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Bicicleta infantil aro 16</h3><p>Com rodinhas, cestinha e buzina.</p><span class="price">R$ 220</span><span class="loc">📍 Santa Tereza do Oeste - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+
+  <section class="cat c10" id="agro">
+    <div class="cat-head"><div class="cat-icon">🚜</div><div><h2>Agro e Máquinas</h2><p>Máquinas, implementos e insumos agrícolas</p></div></div>
+    <div class="grid">
+      <article class="card"><div class="img"><img src="fotos/trator-massey-265.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Trator Massey Ferguson 265</h3><p>Revisado, pneus novos, documentação em dia.</p><span class="price">R$ 78.000</span><span class="loc">📍 Palotina - PR</span><a class="btn" href="anuncios/agro-trator-massey.html">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/rocadeira-costal.jpg" alt="" loading="lazy"></div><div class="body"><h3>Roçadeira costal a gasolina</h3><p>Motor 2 tempos, pouco uso, com kit lâminas.</p><span class="price">R$ 650</span><span class="loc">📍 Toledo - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/pulverizador-costal-20l.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Pulverizador costal 20 L</h3><p>Manual, bico regulável, pouco uso.</p><span class="price">R$ 220</span><span class="loc">📍 Cascavel - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/carreta-agricola-basculante.jpg" alt="" loading="lazy"></div><div class="body"><h3>Carreta agrícola basculante</h3><p>Capacidade de 4 toneladas, pneus bons.</p><span class="price">R$ 15.500</span><span class="loc">📍 Guaíra - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+      <article class="card"><div class="img"><img src="fotos/motobomba-irrigacao.jpeg" alt="" loading="lazy"></div><div class="body"><h3>Motobomba para irrigação</h3><p>3 polegadas, motor a diesel, funcionando.</p><span class="price">R$ 1.200</span><span class="loc">📍 Medianeira - PR</span><a class="btn" href="#">Ver anúncio</a></div></article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><strong>VitrineOeste</strong> &copy; 2026.</div>
+</footer>
+
+</body>
+</html>
